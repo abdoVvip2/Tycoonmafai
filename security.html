@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بروتوكول الأمن السيادي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --steel-blue: #0f172a;
+            --army-blue: #1e293b;
+            --neon-blue: #38bdf8;
+            --text-main: #f1f5f9;
+            --metal-border: #334155;
+            --alert-green: #10b981;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0; font-family: 'Cairo', sans-serif;
+            background-color: var(--steel-blue);
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)),
+                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* رأس الصفحة - واجهة القيادة */
+        .terminal-header {
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--metal-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .system-status {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.75rem; letter-spacing: 2px; color: var(--neon-blue);
+        }
+
+        .status-dot {
+            width: 8px; height: 8px; background: var(--alert-green);
+            border-radius: 50%; box-shadow: 0 0 10px var(--alert-green);
+        }
+
+        .budget-display {
+            text-align: left;
+        }
+        .budget-display label { font-size: 0.6rem; opacity: 0.6; display: block; }
+        .budget-display b { font-size: 1.2rem; font-family: 'Courier New', monospace; color: var(--text-main); }
+
+        .container { padding: 20px; padding-bottom: 100px; max-width: 600px; margin: auto; }
+
+        /* الأقسام العسكرية */
+        .sector-title {
+            font-size: 0.8rem; font-weight: 900; color: var(--neon-blue);
+            margin: 30px 0 15px; text-transform: uppercase;
+            letter-spacing: 3px; border-right: 3px solid var(--neon-blue);
+            padding-right: 10px;
+        }
+
+        .unit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .military-card {
+            background: var(--army-blue);
+            border: 1px solid var(--metal-border);
+            padding: 20px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .military-card:active { transform: scale(0.98); background: #334155; }
+
+        .military-card b { display: block; font-size: 1rem; margin-bottom: 2px; letter-spacing: 0.5px; }
+        .military-card span { font-size: 0.65rem; color: #94a3b8; display: block; margin-bottom: 15px; }
+        
+        .unit-qty {
+            position: absolute; top: 0; left: 0;
+            background: var(--neon-blue); color: #000;
+            font-size: 0.7rem; font-weight: 900; padding: 2px 8px;
+        }
+
+        .auth-btn {
+            width: 100%; padding: 10px; background: transparent;
+            border: 1px solid var(--neon-blue); color: var(--neon-blue);
+            font-family: 'Cairo'; font-weight: 700; font-size: 0.75rem;
+            cursor: pointer; text-transform: uppercase;
+        }
+
+        .auth-btn:hover { background: var(--neon-blue); color: #000; }
+
+        /* بروتوكول الدفاع */
+        .protocol-box {
+            background: #000; border: 1px solid var(--metal-border);
+            padding: 20px; margin-top: 10px;
+        }
+
+        .protocol-box textarea {
+            width: 100%; height: 120px; background: transparent;
+            border: none; color: var(--alert-green); font-family: 'Courier New', monospace;
+            font-size: 0.85rem; outline: none; margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .execute-btn {
+            width: 100%; padding: 15px; background: var(--alert-green);
+            border: none; color: #000; font-weight: 900;
+            font-family: 'Cairo'; font-size: 1rem; cursor: pointer;
+            margin-top: 15px; clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+        }
+
+        /* الملاحة السفلية */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: #050505; display: flex; border-top: 1px solid var(--metal-border);
+        }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #475569; font-size: 0.6rem; }
+        .nav-item.active { color: var(--neon-blue); background: rgba(56, 189, 248, 0.05); }
+
+    </style>
+</head>
+<body>
+
+    <header class="terminal-header">
+        <div class="system-status">
+            <div class="status-dot"></div>
+            <span>SECURE TERMINAL : L7</span>
+        </div>
+        <div class="budget-display">
+            <label>الميزانية المتاحة</label>
+            <b id="p-money">0.00</b>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="sector-title">تعميد القوات الميدانية</div>
+        <div class="unit-grid">
+            <div class="military-card">
+                <div class="unit-qty" id="h-officers">0</div>
+                <b>فوج الشرطة</b>
+                <span>التكلفة: $1,500</span>
+                <button class="auth-btn" onclick="orderUnit('officers', 1500)">إصدار أمر</button>
+            </div>
+            <div class="military-card">
+                <div class="unit-qty" id="h-riot">0</div>
+                <b>وحدة التدخل</b>
+                <span>التكلفة: $4,500</span>
+                <button class="auth-btn" onclick="orderUnit('riotUnits', 4500)">إصدار أمر</button>
+            </div>
+        </div>
+
+        <div class="sector-title">المنشآت السيادية</div>
+        <div class="unit-grid">
+            <div class="military-card">
+                <div class="unit-qty" id="h-stations">0</div>
+                <b>مركز عمليات</b>
+                <span>التكلفة: $85,000</span>
+                <button class="auth-btn" onclick="orderUnit('stations', 85000)">تعميد بناء</button>
+            </div>
+            <div class="military-card">
+                <div class="unit-qty" id="h-prisons">0</div>
+                <b>مجمع احتجاز</b>
+                <span>التكلفة: $250,000</span>
+                <button class="auth-btn" onclick="orderUnit('prisons', 250000)">تعميد بناء</button>
+            </div>
+        </div>
+
+        <div class="sector-title">بروتوكول الانتشار الدفاعي</div>
+        <div class="protocol-box">
+            <label style="font-size: 0.6rem; color: var(--alert-green);">[ سجل الأوامر الاستراتيجية ]</label>
+            <textarea id="defense-text" placeholder="أدخل إحداثيات الانتشار وخطط الطوارئ هنا..."></textarea>
+            <button class="execute-btn" onclick="saveDefensePlan()">تأكيد التنفيذ الاستراتيجي</button>
+        </div>
+
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="consol.html" class="nav-item">🏠<br>الرئيسية</a>
+        <a href="security.html" class="nav-item active">🛡️<br>الأمن</a>
+        <a href="shadow.html" class="nav-item">🥷<br>الظل</a>
+        <a href="Market.html" class="nav-item">🏭<br>الصناعة</a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIxOZ_zEKosBgJD2Thn038BFpM25rVGcc",
+            authDomain: "tycoon-c3b89.firebaseapp.com",
+            projectId: "tycoon-c3b89",
+            storageBucket: "tycoon-c3b89.firebasestorage.app",
+            messagingSenderId: "534437445544",
+            appId: "1:534437445544:web:5f7ea5396367e6b5cca79d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        let userRef;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userRef = doc(db, "players", user.uid);
+                loadMilitaryData();
+            } else { window.location.href = 'home.html'; }
+        });
+
+        async function loadMilitaryData() {
+            const snap = await getDoc(userRef);
+            if (snap.exists()) {
+                const data = snap.data();
+                document.getElementById('p-money').innerText = data.balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+                document.getElementById('h-officers').innerText = data.officers || 0;
+                document.getElementById('h-riot').innerText = data.riotUnits || 0;
+                document.getElementById('h-stations').innerText = data.stations || 0;
+                document.getElementById('h-prisons').innerText = data.prisons || 0;
+                document.getElementById('defense-text').value = data.defensePlan || "";
+            }
+        }
+
+        window.orderUnit = async (type, cost) => {
+            const snap = await getDoc(userRef);
+            if (snap.data().balance >= cost) {
+                await updateDoc(userRef, {
+                    balance: increment(-cost),
+                    [type]: increment(1)
+                });
+                loadMilitaryData();
+            } else { 
+                alert("ACCESS DENIED: Insufficient Funds in Central Bank."); 
+            }
+        };
+
+        window.saveDefensePlan = async () => {
+            const plan = document.getElementById('defense-text').value;
+            await updateDoc(userRef, { defensePlan: plan });
+            alert("PROTOCOL UPDATED: Defense instructions synchronized.");
+        };
+    </script>
+</body>
+</html>

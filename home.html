@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أباطرة السوق | تأسيس الإمبراطورية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b101b;
+            --card: #161e2d;
+            --blue: #3b82f6;
+            --text: #f8fafc;
+            --gold: #d4af37;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .auth-box {
+            background: var(--card);
+            padding: 35px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 650px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        h2 { 
+            text-align: center; 
+            color: var(--blue); 
+            margin-bottom: 30px; 
+            font-size: 1.8rem;
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #2d3748;
+            background: #0f172a;
+            color: white;
+            box-sizing: border-box;
+            font-family: 'Cairo';
+            font-size: 1rem;
+        }
+
+        .regions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .region-card {
+            border: 2px solid #2d3748;
+            padding: 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.02);
+            text-align: center;
+        }
+
+        .region-card:hover, .region-card.selected {
+            border-color: var(--blue);
+            background: rgba(59, 130, 246, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .region-card h4 { margin: 8px 0 10px 0; font-size: 1rem; }
+        .region-card p { font-size: 0.8rem; margin: 0; color: #94a3b8; line-height: 1.4; }
+
+        .btn-action {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            border: none;
+            color: white;
+            font-weight: 900;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            margin-top: 30px;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-action:hover { transform: translateY(-2px); }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--blue);
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .hidden { display: none; }
+
+        label { 
+            font-size: 1rem; 
+            color: #94a3b8; 
+            margin-bottom: 10px; 
+            display: block; 
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-box">
+        <!-- نموذج التسجيل (إنشاء إمبراطورية جديدة) -->
+        <div id="signup-form">
+            <h2>تأسيس إمبراطورية جديدة</h2>
+            
+            <div class="form-group">
+                <input type="text" id="reg-president" placeholder="اسم الرئيس (سيظهر في اللعبة)" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="reg-city" placeholder="اسم الإمبراطورية" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="reg-email" placeholder="البريد الإلكتروني" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="reg-pass" placeholder="كلمة السر (قوية)" required>
+            </div>
+
+            <label>اختر منطقة البداية:</label>
+            <div class="regions-grid">
+                <div class="region-card" onclick="selectRegion(this, 'أرخبيل نيرد')">
+                    <h4>🏝️ أرخبيل نيرد</h4>
+                    <p>تجارة بحرية قوية<br>نقص موارد صخرية</p>
+                </div>
+                <div class="region-card" onclick="selectRegion(this, 'هضبة المطر')">
+                    <h4>⛰️ هضبة المطر</h4>
+                    <p>إنتاج غذاء هائل<br>بعيدة عن الموانئ</p>
+                </div>
+                <div class="region-card" onclick="selectRegion(this, 'واحة الصمت')">
+                    <h4>🏜️ واحة الصمت</h4>
+                    <p>نفط وفير<br>تكلفة بناء عالية</p>
+                </div>
+                <div class="region-card" onclick="selectRegion(this, 'وادي الحديد')">
+                    <h4>🏭 وادي الحديد</h4>
+                    <p>صناعة سريعة<br>تلوث يبطئ النمو</p>
+                </div>
+            </div>
+
+            <label>نظام الحكم الأولي:</label>
+            <select id="reg-system">
+                <option value="capitalist">رأسمالية حرة 💰</option>
+                <option value="dictator">حكم عسكري مطلق 🎖️</option>
+                <option value="communist">شيوعية تعاونية ☭</option>
+                <option value="technocracy">تيكنوقراطية 🧪</option>
+                <option value="monarchy">ملكية دستورية 👑</option>
+                <option value="anarchy">لا سلطوية 🏴</option>
+                <option value="theocracy">حكم ديني ⛪</option>
+                <option value="social_demo">ديمقراطية اجتماعية 🇪🇺</option>
+            </select>
+
+            <button class="btn-action" onclick="handleSignUp()">إنشاء الإمبراطورية</button>
+            
+            <div class="toggle-link" onclick="toggleForms()">لديك إمبراطورية؟ سجل الدخول</div>
+        </div>
+
+        <!-- نموذج تسجيل الدخول -->
+        <div id="login-form" class="hidden">
+            <h2>العودة إلى الحكم</h2>
+            
+            <div class="form-group">
+                <input type="email" id="log-email" placeholder="البريد الإلكتروني" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="log-pass" placeholder="كلمة السر" required>
+            </div>
+
+            <button class="btn-action" onclick="handleLogin()">تسجيل الدخول</button>
+            
+            <div class="toggle-link" onclick="toggleForms()">إنشاء إمبراطورية جديدة</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIxOZ_zEKosBgJD2Thn038BFpM25rVGcc",
+            authDomain: "tycoon-c3b89.firebaseapp.com",
+            projectId: "tycoon-c3b89",
+            storageBucket: "tycoon-c3b89.firebasestorage.app",
+            messagingSenderId: "534437445544",
+            appId: "1:534437445544:web:5f7ea5396367e6b5cca79d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let selectedRegion = "";
+
+        // اختيار المنطقة
+        window.selectRegion = (el, name) => {
+            document.querySelectorAll('.region-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedRegion = name;
+        };
+
+        // التبديل بين النموذجين
+        window.toggleForms = () => {
+            document.getElementById('signup-form').classList.toggle('hidden');
+            document.getElementById('login-form').classList.toggle('hidden');
+        };
+
+        // دالة إنشاء أو تحديث بيانات اللاعب مع presidentName (الحل النهائي)
+        async function ensurePlayerData(uid, president = null, city = null, system = null) {
+            const playerRef = doc(db, "players", uid);
+            const playerSnap = await getDoc(playerRef);
+
+            let playerData = {
+                balance: 1000000,
+                population: 500,
+                bakeries: 31,
+                farms: 31,
+                fuel: 48,
+                bread: 2524,
+                level: 1,
+                lastCheck: new Date(),
+                lastProdDate: new Date(),
+                lastSimDate: new Date(),
+                lastUpdate: new Date(),
+                lastSim: "(ي) - {م}:29",
+                messages: [],
+                region: selectedRegion || "غير محدد",
+                govSystem: system || "capitalist",
+                countryName: city || "إمبراطورية جديدة",
+                email: auth.currentUser?.email || ""
+            };
+
+            // الأهم: presidentName بالضبط زي consol.html
+            if (president) {
+                playerData.presidentName = president;
+            } else if (playerSnap.exists()) {
+                // لو موجود بالفعل، نحافظ على القيمة القديمة إن وجدت
+                playerData.presidentName = playerSnap.data().presidentName || "الإمبراطور الأعظم";
+            } else {
+                playerData.presidentName = "الإمبراطور الأعظم";
+            }
+
+            await setDoc(playerRef, playerData, { merge: true });
+        }
+
+        // إنشاء حساب جديد
+        window.handleSignUp = async () => {
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const president = document.getElementById('reg-president').value.trim();
+            const city = document.getElementById('reg-city').value.trim();
+            const system = document.getElementById('reg-system').value;
+
+            if (!email || !pass || !president || !city || !selectedRegion) {
+                alert("يرجى ملء جميع الحقول واختيار منطقة!");
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+
+                await ensurePlayerData(user.uid, president, city, system);
+
+                alert(`تم تأسيس إمبراطوريتك بنجاح!\nمرحباً يا سيادة الرئيس ${president}`);
+                window.location.href = 'consol.html';
+            } catch (error) {
+                let msg = "حدث خطأ";
+                if (error.code === 'auth/email-already-in-use') msg = "البريد مستخدم بالفعل";
+                else if (error.code === 'auth/weak-password') msg = "كلمة السر ضعيفة";
+                alert(msg);
+            }
+        };
+
+        // تسجيل الدخول
+        window.handleLogin = async () => {
+            const email = document.getElementById('log-email').value.trim();
+            const pass = document.getElementById('log-pass').value;
+
+            if (!email || !pass) {
+                alert("أدخل البريد وكلمة السر");
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+
+                // نتأكد من وجود presidentName حتى للحسابات القديمة
+                await ensurePlayerData(user.uid);
+
+                window.location.href = 'consol.html';
+            } catch (error) {
+                alert("بيانات الدخول غير صحيحة");
+            }
+        };
+    </script>
+</body>
+</html>

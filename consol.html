@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مركز السيطرة | أباطرة السوق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --p-accent: #0ea5e9;
+            --g-accent: #dc2626;
+            --ind-accent: #f59e0b;
+            --bg-dark: #020617;
+            --card-bg: rgba(15, 23, 42, 0.6);
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            font-variant-numeric: tabular-nums; 
+            font-feature-settings: "tnum";
+        }
+
+        body {
+            margin: 0; padding: 0; font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-dark); color: #f1f5f9;
+            height: 100vh; width: 100vw; overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: var(--transition);
+        }
+
+        body.police-mode { background: radial-gradient(circle at top, #0c4a6e 0%, #020617 100%); }
+        body.gang-mode { background: radial-gradient(circle at top, #7f1d1d 0%, #020617 100%); }
+
+        .header {
+            padding: 20px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .emblem-trigger {
+            width: 55px; height: 55px; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .police-mode .emblem-trigger { background: var(--p-accent); box-shadow: 0 0 15px rgba(14, 165, 233, 0.4); }
+        .gang-mode .emblem-trigger { background: var(--g-accent); box-shadow: 0 0 15px rgba(220, 38, 38, 0.4); }
+
+        .title-area { overflow: hidden; white-space: nowrap; }
+        .title-area h1 { margin: 0; font-size: 1.1rem; font-weight: 900; text-overflow: ellipsis; overflow: hidden; }
+        .title-area span { font-size: 0.7rem; opacity: 0.6; letter-spacing: 1px; }
+
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px;
+        }
+        .stat-card {
+            background: var(--card-bg); border-radius: 12px; padding: 12px;
+            border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+        }
+        .stat-card label { display: block; font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; }
+        .stat-card b { 
+            display: block; font-size: 1rem; 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+        }
+        .police-mode .stat-card { border-right: 3px solid var(--p-accent); }
+        .gang-mode .stat-card { border-right: 3px solid var(--g-accent); }
+
+        .advisor-container {
+            flex: 1; margin: 5px 15px; padding: 15px;
+            background: rgba(0,0,0,0.3); border-radius: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        #ai-text {
+            font-size: 0.9rem; line-height: 1.6; color: #cbd5e1;
+            overflow-y: auto; max-height: 200px; padding-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex; gap: 8px; background: rgba(255,255,255,0.05);
+            padding: 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .input-group input {
+            flex: 1; background: none; border: none; color: white;
+            padding: 10px; font-family: 'Cairo'; outline: none; font-size: 0.85rem;
+        }
+        .send-btn {
+            padding: 0 15px; border-radius: 8px; border: none; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+        }
+        .police-mode .send-btn { background: var(--p-accent); color: white; }
+        .gang-mode .send-btn { background: var(--g-accent); color: white; }
+
+        .nav-bar {
+            height: 75px; background: #000; display: flex;
+            justify-content: space-around; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item {
+            text-decoration: none; color: #475569;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            transition: 0.3s; flex: 1;
+        }
+        .nav-item i { font-size: 1.3rem; font-style: normal; }
+        .nav-item small { font-size: 0.65rem; font-weight: 700; }
+
+        .nav-item.active { color: #fff; }
+        .nav-item.shadow-link { color: #dc2626 !important; }
+        .nav-item.ind-link { color: var(--ind-accent); }
+
+    </style>
+</head>
+<body class="police-mode" id="main-body">
+
+    <header class="header">
+        <div class="emblem-trigger" id="emblem" onclick="toggleMode()">🏛️</div>
+        <div class="title-area">
+            <h1 id="p-leader">الرئيس</h1>
+            <span id="mode-label">السيادة الوطنية</span>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <label>خزينة الدولة</label>
+            <b id="p-money">0</b>
+        </div>
+        <div class="stat-card">
+            <label>المستوى السياسي</label>
+            <b id="p-level">0</b>
+        </div>
+    </div>
+
+    <div class="advisor-container">
+        <div id="ai-text">
+            سيدي الرئيس، التقارير الواردة تشير إلى استقرار الأوضاع الاقتصادية. نحن في انتظار أوامرك الجديدة.
+        </div>
+        
+        <div class="input-group">
+            <input type="text" id="ai-in" placeholder="أدخل تعليماتك...">
+            <button class="send-btn" onclick="askAI()">إرسال</button>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="consol.html" class="nav-item active">
+            <i>🏠</i>
+            <small>الرئيسية</small>
+        </a>
+        <a href="security.html" class="nav-item">
+            <i>🛡️</i>
+            <small>الأمن</small>
+        </a>
+        <a href="shadow.html" class="nav-item shadow-link">
+            <i>🥷</i>
+            <small>الظل</small>
+        </a>
+        <a href="Market.html" class="nav-item ind-link">
+            <i>🏭</i>
+            <small>الصناعة</small>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIxOZ_zEKosBgJD2Thn038BFpM25rVGcc",
+            authDomain: "tycoon-c3b89.firebaseapp.com",
+            projectId: "tycoon-c3b89",
+            storageBucket: "tycoon-c3b89.firebasestorage.app",
+            messagingSenderId: "534437445544",
+            appId: "1:534437445544:web:5f7ea5396367e6b5cca79d"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docSnap = await getDoc(doc(db, "players", user.uid));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('p-leader').innerText = data.presidentName;
+                    document.getElementById('p-money').innerText = data.balance.toLocaleString('en-US');
+                    document.getElementById('p-level').innerText = data.level.toLocaleString('en-US');
+                }
+            } else { window.location.href = 'home.html'; }
+        });
+
+        let isPolice = true;
+        window.toggleMode = () => {
+            isPolice = !isPolice;
+            const body = document.getElementById('main-body');
+            const emblem = document.getElementById('emblem');
+            const label = document.getElementById('mode-label');
+            const aiDisplay = document.getElementById('ai-text');
+
+            if (isPolice) {
+                body.className = 'police-mode';
+                emblem.innerText = "🏛️";
+                label.innerText = "السيادة الوطنية";
+                aiDisplay.innerText = "سيدي الرئيس، التقارير الأمنية محدثة وجاهزة للعرض.";
+            } else {
+                body.className = 'gang-mode';
+                emblem.innerText = "⛓️";
+                label.innerText = "مجلس النفوذ";
+                aiDisplay.innerText = "يا زعيم، رجالك في الظل ينتظرون إشارة البدء..";
+            }
+        };
+
+        window.askAI = async () => {
+            const prompt = document.getElementById('ai-in').value;
+            const display = document.getElementById('ai-text');
+            if(!prompt) return;
+            display.innerText = "جاري المعالجة...";
+            
+            const systemRole = isPolice 
+                ? "أنت مستشار رئاسي رفيع المستوى، لغتك رسمية جداً." 
+                : "أنت مستشار إجرامي محترف، لغتك توحي بالخطر والقوة.";
+
+            try {
+                const res = await fetch("https://api.clarifai.com/v2/ext/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { "Authorization": "Bearer 90ecf3d4fe9240d5828d591369455a60", "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: "https://clarifai.com/openai/chat-completion/models/gpt-oss-120b/versions/1d3ee440e48c4e7a94af6acac7d7cdfc",
+                        messages: [{ "role": "system", "content": systemRole }, { "role": "user", "content": prompt }]
+                    })
+                });
+                const d = await res.json();
+                display.innerText = d.choices[0].message.content;
+            } catch (e) { display.innerText = "خطأ في الاتصال بالسيرفر."; }
+        };
+    </script>
+</body>
+</html>
