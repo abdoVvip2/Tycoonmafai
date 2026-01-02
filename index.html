@@ -16,205 +16,95 @@
             --gold-shine: #ffd700;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
+            margin: 0; padding: 0; font-family: 'Cairo', sans-serif;
+            background-color: var(--dark-bg); color: var(--text-main);
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh; overflow-x: hidden; overflow-y: auto;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-            position: relative;
-            padding: 20px 0 100px 0;
+            position: relative; padding: 20px 0 100px 0;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
-            animation: gradientShift 10s ease infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 0.8; }
-        }
-
-        .container {
-            max-width: 900px;
-            width: 92%;
-            position: relative;
-            margin: auto;
-        }
+        .container { max-width: 900px; width: 92%; position: relative; margin: auto; }
 
         .slide {
             background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
-            border-radius: 30px;
-            padding: 40px 20px;
-            text-align: center;
-            width: 100%;
-            display: none;
-            opacity: 0;
-            transition: all 0.5s ease;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px; padding: 40px 20px; text-align: center;
+            width: 100%; display: none; opacity: 0;
+            transition: all 0.5s ease; box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .slide.active {
-            display: block;
-            opacity: 1;
-            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+        .slide.active { display: block; opacity: 1; animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; font-weight: 900; background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { font-size: 1.1rem; line-height: 1.8; color: #e0e0e0; margin-bottom: 30px; }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #e0e0e0;
-            margin-bottom: 30px;
-        }
-
-        .police-theme {
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.9));
-            border: 3px solid var(--police-gold);
-            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
-        }
-
-        .police-icon { font-size: 4rem; margin-bottom: 15px; filter: drop-shadow(0 0 20px var(--gold-shine)); }
-        
-        .police-title { color: var(--police-gold); font-size: 1.8rem; margin-bottom: 20px; }
-
-        .police-desc {
-            background: rgba(0,0,0,0.4);
-            padding: 20px;
-            border-radius: 15px;
-            border-right: 4px solid var(--police-gold);
-            text-align: right;
-        }
-
-        .gang-theme {
-            background: linear-gradient(145deg, rgba(26, 5, 5, 0.98), rgba(69, 10, 10, 0.95));
-            border: 3px solid var(--gang-red);
-            box-shadow: 0 0 50px rgba(220, 38, 38, 0.3);
-        }
-
-        .gang-icon { font-size: 4rem; margin-bottom: 15px; text-shadow: 0 0 20px var(--gang-red); }
-
-        .gang-title { color: var(--gang-red); font-size: 1.8rem; margin-bottom: 20px; }
-
-        .gang-desc {
-            background: rgba(0,0,0,0.5);
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 4px solid var(--gang-red);
-            text-align: right;
-        }
+        .police-theme { background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.9)); border: 3px solid var(--police-gold); }
+        .gang-theme { background: linear-gradient(145deg, rgba(26, 5, 5, 0.98), rgba(69, 10, 10, 0.95)); border: 3px solid var(--gang-red); }
 
         .nav-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            font-weight: 900;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 300px;
+            background: #fff; color: #000; border: none; padding: 15px 40px;
+            font-size: 1.1rem; font-weight: 900; border-radius: 50px; cursor: pointer;
+            width: 100%; max-width: 300px; transition: 0.3s;
         }
 
         .police-btn { background: linear-gradient(135deg, var(--police-gold), var(--gold-shine)); }
         .gang-btn { background: linear-gradient(135deg, var(--gang-red), #b91c1c); color: #fff; }
 
         .progress-dots {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
-            z-index: 100;
-            background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 12px; z-index: 100; background: rgba(0,0,0,0.5);
+            padding: 10px 20px; border-radius: 30px;
         }
 
         .dot { width: 10px; height: 10px; background: #444; border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: #fff; transform: scale(1.3); box-shadow: 0 0 10px #fff; }
+        .dot.active { background: #fff; transform: scale(1.3); }
 
-        @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            p { font-size: 1rem; }
-            .slide { padding: 30px 15px; }
+        /* حالة التحميل الأولي */
+        #loading-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center;
         }
     </style>
 </head>
 <body>
 
+    <div id="loading-overlay">
+        <div style="color:white; font-family:Cairo;">جاري فحص الإمبراطورية...</div>
+    </div>
+
     <div class="container">
         <div class="slide active" id="slide-1">
             <div style="font-size: 4rem; margin-bottom: 20px;">🌍</div>
             <h1>مرحباً بك في ساحة المعركة</h1>
-            <p>في "أباطرة السوق"، المال ليس غاية، بل وسيلة للسيطرة. استعد لدخول حقبة جديدة، حيث تتصارع القوى العظمى للسيطرة على المدن.</p>
+            <p>في "أباطرة السوق"، المال ليس غاية، بل وسيلة للسيطرة. استعد لدخول حقبة جديدة.</p>
             <button class="nav-btn" onclick="nextSlide(2)">استكشاف القوى ⬅</button>
         </div>
 
         <div class="slide police-theme" id="slide-2">
-            <div class="police-icon">⚖️</div>
-            <h2 class="police-title">جناح النظام والعدالة</h2>
-            <div class="police-desc">
-                <p><strong>"الأمن هو أساس الازدهار"</strong></p>
-                <p>بصفتك حاكماً، قطاع الشرطة هو درعك الحصين. بناؤك للمراكز يفرض الهيبة ويحمي منشآتك من التخريب.</p>
-            </div>
-            <button class="nav-btn police-btn" onclick="nextSlide(3)">فهمت.. وماذا عن الوجه الآخر؟</button>
+            <div style="font-size: 4rem;">⚖️</div>
+            <h2 style="color: var(--police-gold)">جناح النظام والعدالة</h2>
+            <p>الأمن هو أساس الازدهار. بصفتك حاكماً، قطاع الشرطة هو درعك الحصين.</p>
+            <button class="nav-btn police-btn" onclick="nextSlide(3)">فهمت.. والوجه الآخر؟</button>
         </div>
 
         <div class="slide gang-theme" id="slide-3">
-            <div class="gang-icon">☠️</div>
-            <h2 class="gang-title">أسياد العالم السفلي</h2>
-            <div class="gang-desc">
-                <p><strong>"الفوضى سلم نصعد عليه"</strong></p>
-                <p>في الظلام، قطاع العصابات هو ذراعك لضرب الخصوم. أرسل رجالك للسرقة وتدمير اقتصاد المنافسين من الداخل.</p>
-            </div>
+            <div style="font-size: 4rem;">☠️</div>
+            <h2 style="color: var(--gang-red)">أسياد العالم السفلي</h2>
+            <p>في الظلام، قطاع العصابات هو ذراعك لضرب الخصوم. الفوضى سلم نصعد عليه.</p>
             <button class="nav-btn gang-btn" onclick="nextSlide(4)">أنا مستعد للسيطرة</button>
         </div>
 
         <div class="slide" id="slide-4">
-            <div style="font-size: 4rem; margin-bottom: 20px;">👑</div>
+            <div style="font-size: 4rem;">👑</div>
             <h1>اختر طريقك</h1>
-            <p>بين حماية مدينتك بقبضة من حديد، وتدمير خصومك بخنجر في الظلام.. أنت من يقرر المصير.</p>
-            <button class="nav-btn" style="background: #2563eb; color: #fff;" onclick="startGame()">⚔️ ابدأ إمبراطوريتك الآن</button>
+            <p>بين الحماية بقبضة من حديد، والتدمير بخنجر في الظلام.. أنت من يقرر.</p>
+            <button class="nav-btn" style="background: #2563eb; color: #fff;" onclick="startGame()">⚔️ ابدأ الآن</button>
         </div>
     </div>
 
@@ -225,22 +115,50 @@
         <div class="dot" id="dot-4"></div>
     </div>
 
-    <script>
-        function nextSlide(slideNumber) {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIxOZ_zEKosBgJD2Thn038BFpM25rVGcc",
+            authDomain: "tycoon-c3b89.firebaseapp.com",
+            projectId: "tycoon-c3b89",
+            storageBucket: "tycoon-c3b89.firebasestorage.app",
+            messagingSenderId: "534437445544",
+            appId: "1:534437445544:web:5f7ea5396367e6b5cca79d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // التحقق من الحالة عند تحميل الصفحة
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // إذا مسجل دخول، اذهب للوحة التحكم فوراً
+                window.location.href = 'consol.html';
+            } else {
+                // إذا غير مسجل، هل شاهد المقدمة؟
+                if (localStorage.getItem('introFinished') === 'true') {
+                    window.location.href = 'home.html';
+                } else {
+                    // مستخدم جديد، اخفِ غطاء التحميل واظهر المقدمة
+                    document.getElementById('loading-overlay').style.display = 'none';
+                }
+            }
+        });
+
+        // دوال التنقل
+        window.nextSlide = (n) => {
             document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-            document.getElementById('slide-' + slideNumber).classList.add('active');
-            updateDots(slideNumber);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function updateDots(num) {
+            document.getElementById('slide-' + n).classList.add('active');
             document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-            document.getElementById('dot-' + num).classList.add('active');
-        }
+            document.getElementById('dot-' + n).classList.add('active');
+        };
 
-        function startGame() {
+        window.startGame = () => {
+            localStorage.setItem('introFinished', 'true');
             window.location.href = 'home.html';
-        }
+        };
     </script>
 </body>
 </html>
