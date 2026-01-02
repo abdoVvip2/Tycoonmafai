@@ -15,12 +15,7 @@
             --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            font-variant-numeric: tabular-nums; 
-            font-feature-settings: "tnum";
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-variant-numeric: tabular-nums; }
 
         body {
             margin: 0; padding: 0; font-family: 'Cairo', sans-serif;
@@ -50,23 +45,18 @@
         .gang-mode .emblem-trigger { background: var(--g-accent); box-shadow: 0 0 15px rgba(220, 38, 38, 0.4); }
 
         .title-area { overflow: hidden; white-space: nowrap; }
-        .title-area h1 { margin: 0; font-size: 1.1rem; font-weight: 900; text-overflow: ellipsis; overflow: hidden; }
+        .title-area h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
         .title-area span { font-size: 0.7rem; opacity: 0.6; letter-spacing: 1px; }
 
-        .stats-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px;
-        }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .stat-card {
             background: var(--card-bg); border-radius: 12px; padding: 12px;
-            border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05); border-right: 3px solid var(--p-accent);
         }
+        .gang-mode .stat-card { border-right-color: var(--g-accent); }
+        
         .stat-card label { display: block; font-size: 0.65rem; color: #94a3b8; margin-bottom: 4px; }
-        .stat-card b { 
-            display: block; font-size: 1rem; 
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-        }
-        .police-mode .stat-card { border-right: 3px solid var(--p-accent); }
-        .gang-mode .stat-card { border-right: 3px solid var(--g-accent); }
+        .stat-card b { display: block; font-size: 1rem; }
 
         .advisor-container {
             flex: 1; margin: 5px 15px; padding: 15px;
@@ -74,23 +64,15 @@
             display: flex; flex-direction: column; justify-content: space-between;
             border: 1px solid rgba(255,255,255,0.03);
         }
-        #ai-text {
-            font-size: 0.9rem; line-height: 1.6; color: #cbd5e1;
-            overflow-y: auto; max-height: 200px; padding-bottom: 10px;
-        }
+        #ai-text { font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; overflow-y: auto; max-height: 200px; }
 
         .input-group {
             display: flex; gap: 8px; background: rgba(255,255,255,0.05);
-            padding: 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px; border-radius: 12px; margin-top: 10px;
         }
-        .input-group input {
-            flex: 1; background: none; border: none; color: white;
-            padding: 10px; font-family: 'Cairo'; outline: none; font-size: 0.85rem;
-        }
-        .send-btn {
-            padding: 0 15px; border-radius: 8px; border: none; font-weight: 700;
-            cursor: pointer; transition: 0.3s;
-        }
+        .input-group input { flex: 1; background: none; border: none; color: white; padding: 10px; outline: none; }
+        
+        .send-btn { padding: 0 15px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
         .police-mode .send-btn { background: var(--p-accent); color: white; }
         .gang-mode .send-btn { background: var(--g-accent); color: white; }
 
@@ -98,20 +80,11 @@
             height: 75px; background: #000; display: flex;
             justify-content: space-around; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: env(safe-area-inset-bottom);
         }
-        .nav-item {
-            text-decoration: none; color: #475569;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            transition: 0.3s; flex: 1;
-        }
+        .nav-item { text-decoration: none; color: #475569; display: flex; flex-direction: column; align-items: center; flex: 1; }
         .nav-item i { font-size: 1.3rem; font-style: normal; }
-        .nav-item small { font-size: 0.65rem; font-weight: 700; }
-
+        .nav-item small { font-size: 0.65rem; }
         .nav-item.active { color: #fff; }
-        .nav-item.shadow-link { color: #dc2626 !important; }
-        .nav-item.ind-link { color: var(--ind-accent); }
-
     </style>
 </head>
 <body class="police-mode" id="main-body">
@@ -119,7 +92,7 @@
     <header class="header">
         <div class="emblem-trigger" id="emblem" onclick="toggleMode()">🏛️</div>
         <div class="title-area">
-            <h1 id="p-leader">الرئيس</h1>
+            <h1 id="p-leader">جاري التحميل...</h1>
             <span id="mode-label">السيادة الوطنية</span>
         </div>
     </header>
@@ -136,10 +109,7 @@
     </div>
 
     <div class="advisor-container">
-        <div id="ai-text">
-            سيدي الرئيس، التقارير الواردة تشير إلى استقرار الأوضاع الاقتصادية. نحن في انتظار أوامرك الجديدة.
-        </div>
-        
+        <div id="ai-text">سيدي الرئيس، نحن بانتظار تحديث البيانات من السحابة...</div>
         <div class="input-group">
             <input type="text" id="ai-in" placeholder="أدخل تعليماتك...">
             <button class="send-btn" onclick="askAI()">إرسال</button>
@@ -147,28 +117,16 @@
     </div>
 
     <nav class="nav-bar">
-        <a href="consol.html" class="nav-item active">
-            <i>🏠</i>
-            <small>الرئيسية</small>
-        </a>
-        <a href="security.html" class="nav-item">
-            <i>🛡️</i>
-            <small>الأمن</small>
-        </a>
-        <a href="shadow.html" class="nav-item shadow-link">
-            <i>🥷</i>
-            <small>الظل</small>
-        </a>
-        <a href="Market.html" class="nav-item ind-link">
-            <i>🏭</i>
-            <small>الصناعة</small>
-        </a>
+        <a href="consol.html" class="nav-item active"><i>🏠</i><small>الرئيسية</small></a>
+        <a href="security.html" class="nav-item"><i>🛡️</i><small>الأمن</small></a>
+        <a href="shadow.html" class="nav-item" style="color:#dc2626"><i>🥷</i><small>الظل</small></a>
+        <a href="Market.html" class="nav-item" style="color:#f59e0b"><i>🏭</i><small>الصناعة</small></a>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDIxOZ_zEKosBgJD2Thn038BFpM25rVGcc",
@@ -178,22 +136,39 @@
             messagingSenderId: "534437445544",
             appId: "1:534437445544:web:5f7ea5396367e6b5cca79d"
         };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        onAuthStateChanged(auth, async (user) => {
+        // استخدام onSnapshot بدلاً من getDoc لجعل التحديث حياً (Real-time)
+        // وبدون أي عمليات كتابة (Set) تسبب تصفير الرصيد
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                const docSnap = await getDoc(doc(db, "players", user.uid));
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('p-leader').innerText = data.presidentName;
-                    document.getElementById('p-money').innerText = data.balance.toLocaleString('en-US');
-                    document.getElementById('p-level').innerText = data.level.toLocaleString('en-US');
-                }
-            } else { window.location.href = 'home.html'; }
+                const playerRef = doc(db, "players", user.uid);
+                
+                onSnapshot(playerRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        document.getElementById('p-leader').innerText = data.presidentName || "الرئيس";
+                        document.getElementById('p-money').innerText = Number(data.balance).toLocaleString('en-US') + " $";
+                        document.getElementById('p-level').innerText = data.level || "1";
+                        
+                        // تحديث رسالة الترحيب مرة واحدة
+                        if(document.getElementById('ai-text').innerText.includes("التحميل")) {
+                            document.getElementById('ai-text').innerText = `مرحباً بك مجدداً يا ${data.presidentName || 'سيادة الرئيس'}. الخزينة تحتوي على ${Number(data.balance).toLocaleString()} دولار.`;
+                        }
+                    } else {
+                        console.error("لا توجد بيانات لهذا اللاعب!");
+                        document.getElementById('ai-text').innerText = "خطأ: لم يتم العثور على ملف الإمبراطورية.";
+                    }
+                });
+            } else {
+                window.location.href = 'home.html';
+            }
         });
 
+        // تحسين دالة الـ AI والتبديل (كما هي في الكود الأصلي)
         let isPolice = true;
         window.toggleMode = () => {
             isPolice = !isPolice;
@@ -202,28 +177,19 @@
             const label = document.getElementById('mode-label');
             const aiDisplay = document.getElementById('ai-text');
 
-            if (isPolice) {
-                body.className = 'police-mode';
-                emblem.innerText = "🏛️";
-                label.innerText = "السيادة الوطنية";
-                aiDisplay.innerText = "سيدي الرئيس، التقارير الأمنية محدثة وجاهزة للعرض.";
-            } else {
-                body.className = 'gang-mode';
-                emblem.innerText = "⛓️";
-                label.innerText = "مجلس النفوذ";
-                aiDisplay.innerText = "يا زعيم، رجالك في الظل ينتظرون إشارة البدء..";
-            }
+            body.className = isPolice ? 'police-mode' : 'gang-mode';
+            emblem.innerText = isPolice ? "🏛️" : "⛓️";
+            label.innerText = isPolice ? "السيادة الوطنية" : "مجلس النفوذ";
+            aiDisplay.innerText = isPolice ? "سيدي الرئيس، التقارير الأمنية محدثة." : "يا زعيم، رجالك في الظل ينتظرون...";
         };
 
         window.askAI = async () => {
             const prompt = document.getElementById('ai-in').value;
             const display = document.getElementById('ai-text');
             if(!prompt) return;
-            display.innerText = "جاري المعالجة...";
+            display.innerText = "جاري الاتصال بالمستشار...";
             
-            const systemRole = isPolice 
-                ? "أنت مستشار رئاسي رفيع المستوى، لغتك رسمية جداً." 
-                : "أنت مستشار إجرامي محترف، لغتك توحي بالخطر والقوة.";
+            const systemRole = isPolice ? "أنت مستشار رئاسي رسمي." : "أنت مستشار إجرامي محترف.";
 
             try {
                 const res = await fetch("https://api.clarifai.com/v2/ext/openai/v1/chat/completions", {
@@ -236,7 +202,7 @@
                 });
                 const d = await res.json();
                 display.innerText = d.choices[0].message.content;
-            } catch (e) { display.innerText = "خطأ في الاتصال بالسيرفر."; }
+            } catch (e) { display.innerText = "فشل الاتصال بالمستشار الرقمي."; }
         };
     </script>
 </body>
