@@ -122,7 +122,6 @@
 <body>
 
     <div class="auth-box">
-        <!-- نموذج التسجيل (إنشاء إمبراطورية جديدة) -->
         <div id="signup-form">
             <h2>تأسيس إمبراطورية جديدة</h2>
             
@@ -176,7 +175,6 @@
             <div class="toggle-link" onclick="toggleForms()">لديك إمبراطورية؟ سجل الدخول</div>
         </div>
 
-        <!-- نموذج تسجيل الدخول -->
         <div id="login-form" class="hidden">
             <h2>العودة إلى الحكم</h2>
             
@@ -222,55 +220,40 @@
 
         let selectedRegion = "";
 
-        // اختيار المنطقة
         window.selectRegion = (el, name) => {
             document.querySelectorAll('.region-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
             selectedRegion = name;
         };
 
-        // التبديل بين النموذجين
         window.toggleForms = () => {
             document.getElementById('signup-form').classList.toggle('hidden');
             document.getElementById('login-form').classList.toggle('hidden');
         };
 
-        // دالة إنشاء أو تحديث بيانات اللاعب مع presidentName (الحل النهائي)
-        async function ensurePlayerData(uid, president = null, city = null, system = null) {
+        // دالة إنشاء بيانات صفرية (فقط عند التسجيل الجديد)
+        async function createNewEmpire(uid, president, city, system) {
             const playerRef = doc(db, "players", uid);
-            const playerSnap = await getDoc(playerRef);
-
-            let playerData = {
-                balance: 1000000,
-                population: 500,
-                bakeries: 31,
-                farms: 31,
-                fuel: 48,
-                bread: 2524,
+            await setDoc(playerRef, {
+                presidentName: president,
+                countryName: city,
+                govSystem: system,
+                region: selectedRegion,
+                balance: 0,        // صفر فلس
+                population: 0,     // صفر سكان
+                bakeries: 0,       // صفر مخابز
+                farms: 0,          // صفر مزارع
+                fuel: 0,           // صفر وقود
+                bread: 0,          // صفر خبز
                 level: 1,
                 lastCheck: new Date(),
                 lastProdDate: new Date(),
                 lastSimDate: new Date(),
                 lastUpdate: new Date(),
-                lastSim: "(ي) - {م}:29",
+                lastSim: "(ي) - {م}:0",
                 messages: [],
-                region: selectedRegion || "غير محدد",
-                govSystem: system || "capitalist",
-                countryName: city || "إمبراطورية جديدة",
-                email: auth.currentUser?.email || ""
-            };
-
-            // الأهم: presidentName بالضبط زي consol.html
-            if (president) {
-                playerData.presidentName = president;
-            } else if (playerSnap.exists()) {
-                // لو موجود بالفعل، نحافظ على القيمة القديمة إن وجدت
-                playerData.presidentName = playerSnap.data().presidentName || "الإمبراطور الأعظم";
-            } else {
-                playerData.presidentName = "الإمبراطور الأعظم";
-            }
-
-            await setDoc(playerRef, playerData, { merge: true });
+                email: auth.currentUser.email
+            });
         }
 
         // إنشاء حساب جديد
@@ -288,21 +271,17 @@
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-                const user = userCredential.user;
-
-                await ensurePlayerData(user.uid, president, city, system);
-
-                alert(`تم تأسيس إمبراطوريتك بنجاح!\nمرحباً يا سيادة الرئيس ${president}`);
+                // عند التسجيل فقط نقوم بإنشاء البيانات الصفرية
+                await createNewEmpire(userCredential.user.uid, president, city, system);
+                
+                alert(`تم التأسيس! مرحباً يا سيادة الرئيس ${president}`);
                 window.location.href = 'consol.html';
             } catch (error) {
-                let msg = "حدث خطأ";
-                if (error.code === 'auth/email-already-in-use') msg = "البريد مستخدم بالفعل";
-                else if (error.code === 'auth/weak-password') msg = "كلمة السر ضعيفة";
-                alert(msg);
+                alert("خطأ في التسجيل: " + error.message);
             }
         };
 
-        // تسجيل الدخول
+        // تسجيل الدخول (لا يعدل البيانات أبداً)
         window.handleLogin = async () => {
             const email = document.getElementById('log-email').value.trim();
             const pass = document.getElementById('log-pass').value;
@@ -313,12 +292,8 @@
             }
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-                const user = userCredential.user;
-
-                // نتأكد من وجود presidentName حتى للحسابات القديمة
-                await ensurePlayerData(user.uid);
-
+                await signInWithEmailAndPassword(auth, email, pass);
+                // التحويل فوراً دون لمس قاعدة البيانات
                 window.location.href = 'consol.html';
             } catch (error) {
                 alert("بيانات الدخول غير صحيحة");
